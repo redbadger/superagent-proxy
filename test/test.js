@@ -14,9 +14,6 @@ require('../')(request);
 
 describe('superagent-proxy', function () {
 
-  // this.slow(5000);
-  // this.timeout(0);
-
   var httpLink = 'http://jsonip.com';
   var httpsLink = 'https://graph.facebook.com';
   var httpResponse = {
@@ -50,12 +47,6 @@ describe('superagent-proxy', function () {
         var data = res.body;
         should.exist(data);
         data.should.eql(httpResponse);
-        // assert('ip' in data);
-        // var ips = data.ip.split(/\,\s*/g);
-        // assert(ips.length >= 1);
-        // ips.forEach(function (ip) {
-        //   assert(net.isIP(ip));
-        // });
         done();
       });
     });
