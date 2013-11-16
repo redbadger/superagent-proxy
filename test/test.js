@@ -7,17 +7,37 @@ var net = require('net');
 var url = require('url');
 var assert = require('assert');
 var request = require('superagent');
-
+var nock = require('nock');
+var should = require('should');
 // extend with .proxy()
 require('../')(request);
 
 describe('superagent-proxy', function () {
 
-  this.slow(5000);
-  this.timeout(10000);
+  // this.slow(5000);
+  // this.timeout(0);
 
-  var httpLink = 'http://jsonip.com/';
-  var httpsLink = 'https://graph.facebook.com/tootallnate';
+  var httpLink = 'http://jsonip.com';
+  var httpsLink = 'https://graph.facebook.com';
+  var httpResponse = {
+    ip: "88.151.154.82",
+    about: "/about",
+    Pro: "http://getjsonip.com"
+  };
+  
+  var httpsResponse = {
+    id: "583807838",
+    name: "Nathan Rajlich",
+    first_name: "Nathan",
+    last_name: "Rajlich",
+    link: "http://www.facebook.com/tootallnate",
+    username: "tootallnate",
+    gender: "male",
+    locale: "en_US"
+  };
+
+  var httpReq = nock(httpLink).persist().get('/').reply(200,httpResponse,{'Content-Type': 'application/json'});
+  var httpsReq = nock(httpsLink).persist().get('/tootallnate').reply(200,httpsResponse,{'Content-Type': 'application/json'});
 
   describe('http: - HTTP proxy', function () {
     var proxy = process.env.HTTP_PROXY || process.env.http_proxy || 'http://10.1.10.200:3128';
@@ -28,23 +48,26 @@ describe('superagent-proxy', function () {
       .proxy(proxy)
       .end(function (res) {
         var data = res.body;
-        assert('ip' in data);
-        var ips = data.ip.split(/\,\s*/g);
-        assert(ips.length >= 1);
-        ips.forEach(function (ip) {
-          assert(net.isIP(ip));
-        });
+        should.exist(data);
+        data.should.eql(httpResponse);
+        // assert('ip' in data);
+        // var ips = data.ip.split(/\,\s*/g);
+        // assert(ips.length >= 1);
+        // ips.forEach(function (ip) {
+        //   assert(net.isIP(ip));
+        // });
         done();
       });
     });
 
     it('should work against an HTTPS endpoint', function (done) {
       request
-      .get(httpsLink)
+      .get(httpsLink+'/tootallnate')
       .proxy(proxy)
       .end(function (res) {
-        var data = JSON.parse(res.text);
-        assert.equal('tootallnate', data.username);
+        var data = res.body;
+        should.exist(data);
+        data.should.eql(httpsResponse);
         done();
       });
     });
@@ -62,12 +85,8 @@ describe('superagent-proxy', function () {
       .proxy(p)
       .end(function (res) {
         var data = res.body;
-        assert('ip' in data);
-        var ips = data.ip.split(/\,\s*/g);
-        assert(ips.length >= 1);
-        ips.forEach(function (ip) {
-          assert(net.isIP(ip));
-        });
+        should.exist(data);
+        data.should.eql(httpResponse);
         done();
       });
     });
@@ -77,11 +96,12 @@ describe('superagent-proxy', function () {
       p.rejectUnauthorized = false;
 
       request
-      .get(httpsLink)
+      .get(httpsLink+'/tootallnate')
       .proxy(p)
       .end(function (res) {
-        var data = JSON.parse(res.text);
-        assert.equal('tootallnate', data.username);
+        var data = res.body;
+        should.exist(data);
+        data.should.eql(httpsResponse);
         done();
       });
     });
@@ -96,23 +116,20 @@ describe('superagent-proxy', function () {
       .proxy(proxy)
       .end(function (res) {
         var data = res.body;
-        assert('ip' in data);
-        var ips = data.ip.split(/\,\s*/g);
-        assert(ips.length >= 1);
-        ips.forEach(function (ip) {
-          assert(net.isIP(ip));
-        });
+        should.exist(data);
+        data.should.eql(httpResponse);
         done();
       });
     });
 
     it('should work against an HTTPS endpoint', function (done) {
       request
-      .get(httpsLink)
+      .get(httpsLink+'/tootallnate')
       .proxy(proxy)
       .end(function (res) {
-        var data = JSON.parse(res.text);
-        assert.equal('tootallnate', data.username);
+        var data = res.body;
+        should.exist(data);
+        data.should.eql(httpsResponse);
         done();
       });
     });
