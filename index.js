@@ -7,7 +7,7 @@ var url = require('url');
 var HttpProxyAgent = require('http-proxy-agent');
 var HttpsProxyAgent = require('https-proxy-agent');
 var SocksProxyAgent = require('socks-proxy-agent');
-
+var debug = require('debug');
 /**
  * Module exports.
  */

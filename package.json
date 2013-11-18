@@ -25,7 +25,8 @@
   "dependencies": {
     "http-proxy-agent": "",
     "https-proxy-agent": "",
-    "socks-proxy-agent": ""
+    "socks-proxy-agent": "",
+    "debug": ""
   },
   "peerDependencies": {
     "superagent": ""
