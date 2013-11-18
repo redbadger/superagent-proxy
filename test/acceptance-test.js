@@ -19,7 +19,8 @@ describe('acceptance - superagent.Request#proxy()', function () {
   it('should make a request to the https endpoint', function (done) {
     this.timeout(0);
     request.get('https://yahoo.com').proxy('http://localhost:3128').end(function (res) {
-      should.exist(res)
+      should.exist(res);
+      done()
     })
   })
 })
