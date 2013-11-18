@@ -9,9 +9,9 @@ require('../')(request);
 
 describe('acceptance - superagent.Request#proxy()', function () {
   it('should make a request to the http endpoint', function (done) {
-    request.get('http://yahoo.co.uk').proxy('http://localhost:3128').end(function (res) {
+    request.get('http://jsonip.com/').proxy('http://localhost:3128').end(function (res) {
       should.exist(res)
-      // res.body.ip.should.exist
+      res.body.ip.should.exist
       done()
     })
   });
