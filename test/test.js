@@ -36,6 +36,33 @@ describe('superagent-proxy', function () {
   var httpReq = nock(httpLink).persist().get('/').reply(200,httpResponse,{'Content-Type': 'application/json'});
   var httpsReq = nock(httpsLink).persist().get('/tootallnate').reply(200,httpsResponse,{'Content-Type': 'application/json'});
 
+  describe('superagent.Request#proxy()', function () {
+    it('should be a function', function () {
+      assert.equal('function', typeof request.Request.prototype.proxy);
+    });
+    it('should accept a "string" proxy URI', function () {
+      var req = request.get('http://foo.com');
+      req.proxy('http://example.com');
+    });
+    it('should accept an options "object" with proxy info', function () {
+      var req = request.get('http://foo.com');
+      req.proxy({
+        protocol: 'https',
+        host: 'proxy.org',
+        port: 8080
+      });
+    });
+    it('should throw on an options "object" without "protocol"', function () {
+      var req = request.get('http://foo.com');
+      assert.throws(function () {
+        req.proxy({
+          host: 'proxy.org',
+          port: 8080
+        });
+      });
+    }, /proxy type/);
+  });
+
   describe('http: - HTTP proxy', function () {
     var proxy = process.env.HTTP_PROXY || process.env.http_proxy || 'http://10.1.10.200:3128';
 

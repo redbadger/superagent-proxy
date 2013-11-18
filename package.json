@@ -1,6 +1,6 @@
 {
   "name": "superagent-proxy",
-  "version": "0.0.2",
+  "version": "0.1.0",
   "description": "`Request#proxy(uri)` superagent extension",
   "main": "index.js",
   "scripts": {
@@ -23,17 +23,17 @@
     "url": "https://github.com/TooTallNate/superagent-proxy/issues"
   },
   "dependencies": {
-    "http-proxy-agent": "",
-    "https-proxy-agent": "",
-    "socks-proxy-agent": "",
-    "debug": ""
+    "http-proxy-agent": "0",
+    "https-proxy-agent": "0",
+    "socks-proxy-agent": "0",
+    "lru-cache": "~2.3.1",
+    "debug":""
   },
   "peerDependencies": {
-    "superagent": ""
+    "superagent": "~0.15.4"
   },
   "devDependencies": {
     "mocha": "~1.12.0",
-    "nock": "",
-    "should": ""
+    "superagent": "~0.15.4"
   }
 }
